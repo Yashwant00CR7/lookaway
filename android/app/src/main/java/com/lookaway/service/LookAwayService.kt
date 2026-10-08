@@ -150,7 +150,8 @@ class LookAwayService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        when (intent?.action) {
+        val action = intent?.action ?: ACTION_START
+        when (action) {
             ACTION_START -> {
                 startForeground(
                     NotificationHelper.TRACKING_NOTIFICATION_ID,
@@ -158,11 +159,17 @@ class LookAwayService : Service() {
                 )
                 stateMachine.start()
                 startTicker()
+                statsRepository.updatePreferences(
+                    statsRepository.getPreferences().copy(trackingEnabled = true)
+                )
             }
             ACTION_STOP -> {
                 stopTicker()
                 stateMachine.stop()
                 _timerState.value = stateMachine.snapshot
+                statsRepository.updatePreferences(
+                    statsRepository.getPreferences().copy(trackingEnabled = false)
+                )
                 stopForeground(STOP_FOREGROUND_REMOVE)
                 stopSelf()
             }

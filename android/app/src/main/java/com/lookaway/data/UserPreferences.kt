@@ -4,7 +4,8 @@ data class UserPreferences(
     val workDurationMinutes: Int = 20,
     val breakDurationSeconds: Int = 20,
     val soundEnabled: Boolean = true,
-    val vibrationEnabled: Boolean = true
+    val vibrationEnabled: Boolean = true,
+    val trackingEnabled: Boolean = true
 ) {
     val workDurationSeconds: Int
         get() = workDurationMinutes * 60

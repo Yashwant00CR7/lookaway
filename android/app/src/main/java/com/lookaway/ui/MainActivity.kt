@@ -15,18 +15,26 @@ import com.lookaway.ui.dashboard.DashboardScreen
 import com.lookaway.ui.dashboard.DashboardViewModel
 import com.lookaway.ui.theme.LookAwayTheme
 
+import android.content.Intent
+import android.net.Uri
+import android.os.PowerManager
+import android.provider.Settings
+
 class MainActivity : ComponentActivity() {
 
     private val viewModel: DashboardViewModel by viewModels()
 
     private val requestNotificationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            // Permission result handled; notifications will display if granted
+            // Permission result handled
+            viewModel.autoStartIfEnabled()
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         checkAndRequestPermissions()
+        checkBatteryOptimizations()
+        viewModel.autoStartIfEnabled()
 
         setContent {
             LookAwayTheme {
@@ -59,6 +67,22 @@ class MainActivity : ComponentActivity() {
 
             if (!hasNotificationPermission) {
                 requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
+
+    private fun checkBatteryOptimizations() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val powerManager = getSystemService(POWER_SERVICE) as? PowerManager
+            if (powerManager != null && !powerManager.isIgnoringBatteryOptimizations(packageName)) {
+                try {
+                    val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                        data = Uri.parse("package:$packageName")
+                    }
+                    startActivity(intent)
+                } catch (_: Exception) {
+                    // Fallback if OEM custom ROM doesn't support the direct intent
+                }
             }
         }
     }

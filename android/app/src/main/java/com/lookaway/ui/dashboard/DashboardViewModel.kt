@@ -50,6 +50,13 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
+    fun autoStartIfEnabled() {
+        val app = getApplication<Application>()
+        if (preferences.value.trackingEnabled && timerState.value.state == SessionState.STOPPED) {
+            LookAwayService.startService(app)
+        }
+    }
+
     fun savePreferences(newPreferences: UserPreferences) {
         val app = getApplication<Application>()
         statsRepository.updatePreferences(newPreferences)

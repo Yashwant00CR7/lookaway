@@ -49,12 +49,13 @@ class StatsRepositoryTest {
     }
 
     @Test
-    fun `default preferences are 20 minutes work, 20 seconds break, audio and vibration on`() {
+    fun `default preferences are 20 minutes work, 20 seconds break, audio and vibration on, tracking enabled`() {
         val prefs = repository.getPreferences()
         assertEquals(20, prefs.workDurationMinutes)
         assertEquals(20, prefs.breakDurationSeconds)
         assertTrue(prefs.soundEnabled)
         assertTrue(prefs.vibrationEnabled)
+        assertTrue(prefs.trackingEnabled)
     }
 
     @Test
@@ -63,7 +64,8 @@ class StatsRepositoryTest {
             workDurationMinutes = 25,
             breakDurationSeconds = 30,
             soundEnabled = false,
-            vibrationEnabled = true
+            vibrationEnabled = true,
+            trackingEnabled = false
         )
         repository.updatePreferences(updated)
 
@@ -72,6 +74,7 @@ class StatsRepositoryTest {
         assertEquals(30, retrieved.breakDurationSeconds)
         assertEquals(false, retrieved.soundEnabled)
         assertEquals(true, retrieved.vibrationEnabled)
+        assertEquals(false, retrieved.trackingEnabled)
     }
 
     @Test

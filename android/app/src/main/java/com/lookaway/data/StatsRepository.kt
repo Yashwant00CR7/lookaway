@@ -11,6 +11,7 @@ class StatsRepository(private val store: KeyValueStore) {
         private const val KEY_BREAK_DURATION_SEC = "pref_break_duration_sec"
         private const val KEY_SOUND_ENABLED = "pref_sound_enabled"
         private const val KEY_VIBRATION_ENABLED = "pref_vibration_enabled"
+        private const val KEY_TRACKING_ENABLED = "pref_tracking_enabled"
 
         private const val PREFIX_COMPLETED = "stats_completed_"
         private const val PREFIX_SKIPPED = "stats_skipped_"
@@ -27,7 +28,8 @@ class StatsRepository(private val store: KeyValueStore) {
             workDurationMinutes = store.getInt(KEY_WORK_DURATION_MIN, 20),
             breakDurationSeconds = store.getInt(KEY_BREAK_DURATION_SEC, 20),
             soundEnabled = store.getBoolean(KEY_SOUND_ENABLED, true),
-            vibrationEnabled = store.getBoolean(KEY_VIBRATION_ENABLED, true)
+            vibrationEnabled = store.getBoolean(KEY_VIBRATION_ENABLED, true),
+            trackingEnabled = store.getBoolean(KEY_TRACKING_ENABLED, true)
         )
     }
 
@@ -36,6 +38,7 @@ class StatsRepository(private val store: KeyValueStore) {
         store.putInt(KEY_BREAK_DURATION_SEC, preferences.breakDurationSeconds)
         store.putBoolean(KEY_SOUND_ENABLED, preferences.soundEnabled)
         store.putBoolean(KEY_VIBRATION_ENABLED, preferences.vibrationEnabled)
+        store.putBoolean(KEY_TRACKING_ENABLED, preferences.trackingEnabled)
     }
 
     fun getStatsForDate(date: String = todayDateString()): DailyStats {
