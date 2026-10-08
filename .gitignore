@@ -1,11 +1,14 @@
 *.iml
 .gradle
+**/build/
+build/
 /local.properties
+local.properties
 /.idea/
 .DS_Store
-/build
 /captures
 .externalNativeBuild
 .cxx
 *.apk
 *.aab
+!lookaway-debug.apk
