@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  body {
+    width: 412px;
+    height: 892px;
+    background-color: #0F172A;
+    color: #F8FAFC;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .status-bar {
+    height: 38px;
+    padding: 8px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #CBD5E1;
+  }
+  .app-bar {
+    height: 56px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .app-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #F8FAFC;
+  }
+  .app-icon {
+    width: 26px;
+    height: 26px;
+    fill: #38BDF8;
+  }
+  .content {
+    flex: 1;
+    padding: 10px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+  }
+  .hero-card {
+    background: #1E293B;
+    border-radius: 24px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .status-pill {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10B981;
+    padding: 5px 14px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    background: #10B981;
+    border-radius: 50%;
+  }
+  .timer-ring-container {
+    margin: 18px 0;
+    position: relative;
+    width: 175px;
+    height: 175px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .ring-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+  .ring-bg {
+    fill: none;
+    stroke: #334155;
+    stroke-width: 10;
+  }
+  .ring-progress {
+    fill: none;
+    stroke: #38BDF8;
+    stroke-width: 10;
+    stroke-dasharray: 471;
+    stroke-dashoffset: 80;
+    stroke-linecap: round;
+  }
+  .timer-text {
+    text-align: center;
+    z-index: 1;
+  }
+  .timer-digits {
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  .timer-label {
+    font-size: 12px;
+    color: #94A3B8;
+  }
+  .btn-stop {
+    width: 100%;
+    height: 48px;
+    background: #DC2626;
+    border: none;
+    border-radius: 16px;
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .anime-card {
+    background: #1E293B;
+    border-radius: 20px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .anime-thumb {
+    width: 54px;
+    height: 54px;
+    background: #0F172A;
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  .anime-thumb img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+  }
+  .anime-details {
+    flex: 1;
+  }
+  .anime-tag {
+    font-size: 11px;
+    color: #F59E0B;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .anime-name {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .anime-sub {
+    font-size: 11px;
+    color: #94A3B8;
+  }
+  .btn-change {
+    padding: 6px 14px;
+    background: transparent;
+    border: 1px solid #475569;
+    border-radius: 10px;
+    color: #E2E8F0;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .actions-row {
+    display: flex;
+    gap: 10px;
+  }
+  .btn-test {
+    flex: 1;
+    height: 44px;
+    background: #0284C7;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-test-outline {
+    flex: 1;
+    height: 44px;
+    background: transparent;
+    border: 1px solid #475569;
+    border-radius: 12px;
+    color: #CBD5E1;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .stats-card {
+    background: #1E293B;
+    border-radius: 20px;
+    padding: 16px;
+  }
+  .stats-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .stats-grid {
+    display: flex;
+    justify-content: space-between;
+  }
+  .stat-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .stat-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+  }
+  .stat-val {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .stat-lbl {
+    font-size: 10px;
+    color: #94A3B8;
+  }
+</style>
+</head>
+<body>
+  <div class="status-bar">
+    <span>12:45</span>
+    <span>📶 5G 🔋 94%</span>
+  </div>
+
+  <div class="app-bar">
+    <div class="app-title">
+      <svg class="app-icon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      <span>LookAway</span>
+    </div>
+    <div style="font-size: 20px; color: #94A3B8;">⚙️</div>
+  </div>
+
+  <div class="content">
+    <div class="hero-card">
+      <div class="status-pill">
+        <div class="status-dot"></div>
+        <span>Monitoring Screen Time</span>
+      </div>
+
+      <div class="timer-ring-container">
+        <svg class="ring-svg" viewBox="0 0 175 175">
+          <circle class="ring-bg" cx="87.5" cy="87.5" r="75"></circle>
+          <circle class="ring-progress" cx="87.5" cy="87.5" r="75"></circle>
+        </svg>
+        <div class="timer-text">
+          <div class="timer-digits">18:42</div>
+          <div class="timer-label">Next Eye Break</div>
+        </div>
+      </div>
+
+      <button class="btn-stop">
+        <span>⏹</span>
+        <span>Stop Protection</span>
+      </button>
+    </div>
+
+    <div class="anime-card">
+      <div class="anime-thumb">
+        <img src="https://media.giphy.com/media/ul1omlrGG6kpO/giphy.gif" alt="Goku">
+      </div>
+      <div class="anime-details">
+        <div class="anime-tag">✨ Break Anime Character</div>
+        <div class="anime-name">Goku</div>
+        <div class="anime-sub">Dragon Ball Z • Tap to change</div>
+      </div>
+      <button class="btn-change">Change</button>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn-test">⚡ Test Anime Overlay</button>
+      <button class="btn-test-outline">Test Fullscreen</button>
+    </div>
+
+    <div class="stats-card">
+      <div class="stats-title">Today's Eye Health</div>
+      <div class="stats-grid">
+        <div class="stat-col">
+          <div class="stat-icon" style="background: rgba(16, 185, 129, 0.15); color: #10B981;">✓</div>
+          <div class="stat-val">8</div>
+          <div class="stat-lbl">Breaks Done</div>
+        </div>
+        <div class="stat-col">
+          <div class="stat-icon" style="background: rgba(244, 63, 94, 0.15); color: #F43F5E;">✕</div>
+          <div class="stat-val">1</div>
+          <div class="stat-lbl">Skipped</div>
+        </div>
+        <div class="stat-col">
+          <div class="stat-icon" style="background: rgba(56, 189, 248, 0.15); color: #38BDF8;">⏱</div>
+          <div class="stat-val">2h 45m</div>
+          <div class="stat-lbl">Screen Time</div>
+        </div>
+        <div class="stat-col">
+          <div class="stat-icon" style="background: rgba(168, 85, 247, 0.15); color: #A855F7;">👁</div>
+          <div class="stat-val">160s</div>
+          <div class="stat-lbl">Rest Gained</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

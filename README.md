@@ -1,105 +1,159 @@
 # LookAway 👁️
-> **Relieve Digital Eye Strain & Dry Eyes with the 20-20-20 Rule**
+> **Relieve Digital Eye Strain & Dry Eyes with the 20-20-20 Rule & Floating Anime Breaks**
 
-LookAway is an intelligent, privacy-first, battery-friendly Android application designed to prevent digital eye strain and ocular dryness by enforcing the clinically proven **20-20-20 eye care rule**.
-
----
-
-## 🔬 The Science: Blue Light Glasses vs The 20-20-20 Rule
-
-Many people assume "blue light blocking" (blu-ray) glasses relieve dry, irritated eyes after working at a computer or phone. However, clinical ophthalmology studies (including the American Academy of Ophthalmology) have confirmed that **blue light is not what causes dry eyes or eye fatigue**:
-
-1. **Decreased Blink Rate**: Under normal conditions, humans blink ~15 times per minute. When staring intently at screens, that rate drops by over 50% to ~5–7 blinks per minute. Tears evaporate, leaving the cornea exposed and dry.
-2. **Ciliary Muscle Accommodation Spasm**: Focusing at a near distance (30–50 cm) keeps the eye’s focusing muscles (ciliary muscles) contracted for hours without relief.
-
-### The Solution: The 20-20-20 Rule
-- **Every 20 minutes** of screen time,
-- Look at a stationary object **at least 20 feet away (6 meters)** or out a window,
-- For **at least 20 seconds**.
-
-Looking into the distance completely relaxes the ciliary muscle spasm and prompts natural blinking to restore the eye's tear film.
+[![GitHub Release](https://img.shields.io/github/v/release/Yashwant00CR7/lookaway?color=38BDF8&label=Release&style=flat-square)](https://github.com/Yashwant00CR7/lookaway/releases/latest)
+[![Platform](https://img.shields.io/badge/Platform-Android%208.0%2B%20(API%2026--35)-10B981?style=flat-square)](https://developer.android.com)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.0.21-7F52FF?style=flat-square)](https://kotlinlang.org)
+[![Compose](https://img.shields.io/badge/UI-Jetpack%20Compose%20M3-4285F4?style=flat-square)](https://developer.android.com/jetpack/compose)
+[![Privacy](https://img.shields.io/badge/Privacy-100%25%20Local%20(Zero%20Camera)-success?style=flat-square)](#-why-screen-time-tracking-instead-of-camera-iris-tracking)
+[![License](https://img.shields.io/badge/License-MIT-gray?style=flat-square)](LICENSE)
 
 ---
 
-## ⚡ Why Screen-Time Tracking Instead of Camera Eye Tracking?
+## 📥 Download
 
-LookAway rejects battery-draining, camera-based iris tracking in favor of event-driven system screen-time tracking:
+👉 **[Download Latest APK (v1.1.0)](https://github.com/Yashwant00CR7/lookaway/releases/latest/download/lookaway-v1.1.0.apk)** *(Direct install on Android 8.0+)*
 
-| Feature | Camera Eye Tracking | LookAway Screen-Time Tracking |
+---
+
+## 📸 Screenshots
+
+| 📱 **Active Dashboard & Timer** | ⚡ **Floating Anime Break Overlay** |
+| :---: | :---: |
+| <img src="docs/screenshots/dashboard.png" width="360" alt="LookAway Dashboard Screen" /> | <img src="docs/screenshots/overlay.png" width="360" alt="LookAway Floating Break Overlay" /> |
+| *Real-time screen-time countdown, service status, today's eye health metrics, and anime theme selection.* | *Floating transparent character sticker with 20s countdown ring appearing directly over any active app.* |
+
+---
+
+## 🎯 Core Purpose & The Problem
+
+### 👓 The Blue-Ray / UV Glasses Misconception
+Many of us experience scratchy, burning, dry eyes and headaches after hours of staring at phones and computers. A widespread misconception (often marketed by optical shops and shared by well-meaning peers) suggests that **"blue light blocking" (blu-ray) glasses** will solve eye dryness and screen fatigue.
+
+Clinical research and the **American Academy of Ophthalmology (AAO)** have repeatedly debunked this myth:
+> **Blue light emitted by computer and phone screens does NOT cause ocular dryness or digital eye strain.**
+
+The real biological causes of digital eye strain are two-fold:
+1. **Dramatic Drop in Blink Rate (Tear Film Evaporation):**
+   - Under normal conditions, humans blink approximately **15 times per minute**.
+   - When concentrating intensely on digital displays, our spontaneous blink rate drops by over 60% down to **5–7 blinks per minute**.
+   - Without regular blinking, the eye's delicate lipid and aqueous tear film evaporates, exposing the sensitive corneal epithelium to room air and creating severe dryness, redness, and burning sensations.
+2. **Ciliary Muscle Accommodation Spasm (Near-Focus Fatigue):**
+   - Human eyes evolved to rest at optical infinity (> 20 feet away).
+   - Staring at a near screen (30–50 cm) forces the intraocular **ciliary muscles to stay continuously contracted** in an accommodation spasm for hours without relief.
+
+---
+
+### 🔬 The Clinically Proven Solution: The 20-20-20 Rule
+Developed by optometrist Dr. Jeffrey Anshel and endorsed by ophthalmologists worldwide:
+- **Every 20 minutes** of continuous screen viewing,
+- Shift your gaze to a stationary object **at least 20 feet away (6 meters)** (e.g., out a window or down a hallway),
+- Keep looking into the distance for **at least 20 seconds**.
+
+Looking into the distance completely releases tension on the ciliary muscles, resets focal accommodation, and triggers deep natural blinks that replenish the corneal tear film.
+
+---
+
+### 🔋 Why Screen-Time Tracking Instead of Camera Iris Tracking?
+When conceptualizing an eye-care assistant, a common idea is using the front-facing selfie camera with AI computer vision to track the user's pupils and blink rate. While technically interesting, for real-world daily use this approach has fatal drawbacks:
+
+| Evaluation Vector | Front Camera Computer Vision | LookAway Screen-Time Engine |
 | :--- | :--- | :--- |
-| **Battery Life** | Drains 15–30% battery/hr (camera + NPU/GPU) | **< 0.1% battery/day** (event-driven timer) |
-| **Privacy** | Camera sensor active constantly (green LED on) | **100% Private** (zero camera/mic permissions) |
-| **Reliability** | Fails in low light, tilted angles, or with glasses | **100% Deterministic** across all conditions |
-| **Passive Breaks** | Doesn't know when phone is locked in your pocket | **Smart Reset**: Automatically detects when screen is locked |
+| **Battery Consumption** | **Severe:** 15%–30% battery drain per hour (camera sensor + continuous neural inference) | **Zero Impact:** < 0.1% battery drain per day (event-driven hardware broadcasts) |
+| **Privacy & Security** | Camera stays powered on all day (green privacy LED indicator on, potential recording fear) | **100% Private:** Zero camera, microphone, or biometric permissions requested |
+| **Reliability** | Easily fails in low light, tilted angles, lying in bed, or when wearing spectacles | **100% Deterministic:** Screen status is reported directly by the Android OS |
+| **Heat & Thermal Throttle** | Causes mobile device to run hot | Device remains completely cool |
+| **Passive Natural Breaks** | Cannot reliably tell if user left phone on desk or put in pocket | **Smart Screen-Off Reset:** Detects lock state accurately |
+
+**Verdict:** Event-driven screen-time tracking is dramatically superior, lightweight, and respectful of both battery and privacy.
 
 ---
 
-## 🧠 Smart Reset Logic
+## 🧠 Smart Reset Architecture
 
-LookAway doesn't naively fire alarms if you haven't even been using your screen:
-- **Screen On**: Active timer decrements towards the break interval (default: 20 minutes).
-- **Screen Off < 20 seconds**: If you put your phone in your pocket briefly or answer a quick glance, the timer pauses and resumes.
-- **Screen Off ≥ 20 seconds**: If your phone screen is off for 20+ seconds, your eyes enjoyed a natural rest! LookAway automatically resets the 20-minute countdown back to the beginning.
-
----
-
-## 📱 Features
-
-- **Floating Anime Animation Overlay over other apps**: When 20 minutes of screen time elapse, a soothing semi-transparent overlay appears directly on top of whatever app you are using (WhatsApp, YouTube, games, browser) featuring an animated anime character with a **transparent background** (isolated character sticker, no solid box) and a 20-second circular countdown ring!
-- **Curated Famous Anime Roster + Custom Web URL**:
-  - **Goku** (Dragon Ball Z)
-  - **Naruto** (Naruto Shippuden)
-  - **Luffy** (One Piece)
-  - **Anya Forger** (Spy x Family)
-  - **Pikachu** (Pokémon)
-  - **Totoro** (My Neighbor Totoro)
-  - **Custom Web URL**: Paste any transparent GIF or animated WebP link from the web to display your own favorite character!
-- **Zero-Friction Fallback**: If "Display over other apps" permission hasn't been granted yet, LookAway gracefully falls back to the Full-Screen alarm intent so you never miss a break.
-- **Harmonic Chime & Haptic Pulse**: Plays a subtle completion tone and gentle vibration when the 20 seconds conclude so you don't even have to look at the screen during your break.
-- **Today's Eye Health Dashboard**:
-  - Breaks Taken Today
-  - Breaks Skipped
-  - Total Active Screen Time
-  - Total Seconds of Eye Rest Gained
-- **Customizable Intervals**: Configure work intervals (15m, 20m, 25m, 30m, etc.) and break durations (15s, 20s, 30s) to fit your schedule.
-- **Eye-Comfort Dark Theme**: Material 3 dark color scheme tuned to minimize screen glare.
+LookAway doesn't naively sound alarms every 20 minutes if you were barely using your phone:
+- **Screen On:** The foreground service monitors active display time and decrements the timer towards the break interval (default: 20 minutes).
+- **Brief Glance / Screen Off < 20s:** If you lock your phone briefly to check something or put it in your pocket for a few seconds, the timer simply pauses. When unlocked, it continues from where you left off.
+- **Genuine Rest / Screen Off ≥ 20s:** If your phone remains locked for 20 seconds or longer, your eyes already enjoyed a natural rest! LookAway intelligently resets the 20-minute countdown back to the full 20:00 mark.
 
 ---
 
-## 🛠️ Architecture
+## ✨ Features
 
-- **Language:** Kotlin 2.0.21
-- **UI Framework:** Jetpack Compose (Material 3)
-- **Background Engine:** Android Foreground Service with low-priority notification
-- **Screen Detection:** Dynamic `BroadcastReceiver` for `ACTION_SCREEN_ON` and `ACTION_SCREEN_OFF`
-- **Minimum SDK:** API 26 (Android 8.0)
-- **Target SDK:** API 35 (Android 15)
+### 🌟 Floating Anime Break Overlay (Over Other Apps)
+When 20 minutes of screen time elapse, LookAway doesn't disrupt you with an annoying full-screen interruption or harsh sound. Instead, it renders an **isolated floating character sticker with a transparent background** directly over your current active app (YouTube, WhatsApp, Twitter, games, or browser):
+- **Transparent Character Animation:** Curated animated character sticker (no solid opaque box or harsh background).
+- **20-Second Progress Ring:** Smooth circular countdown indicator displaying remaining rest time.
+- **Quick Controls:** `Snooze (+5m)` if you're in the middle of a critical task, or `Done` when finished.
+
+### 🎭 Curated Famous Anime Character Presets & Custom URLs
+Choose your favorite companion to remind you to rest:
+- **Goku** (*Dragon Ball Z*) - Super Saiyan focus
+- **Naruto Uzumaki** (*Naruto Shippuden*) - Thumbs-up encouragement
+- **Monkey D. Luffy** (*One Piece*) - Carefree pirate cheer
+- **Anya Forger** (*Spy x Family*) - "Waku waku" cheerful smile
+- **Pikachu** (*Pokémon*) - Electric cheer
+- **Totoro** (*My Neighbor Totoro*) - Calming nature companion
+- 🌐 **Custom Web URL:** Paste any direct URL to a transparent GIF or animated WebP from Giphy, Tenor, or personal storage!
+
+### 📊 Daily Eye Health Analytics Dashboard
+Track your daily habits and see your progress:
+- **Breaks Taken Today:** Successful 20-20-20 breaks completed.
+- **Breaks Skipped / Snoozed:** Instances where breaks were deferred.
+- **Screen Time Monitored:** Total cumulative screen time today.
+- **Eye Rest Earned:** Total seconds of ciliary muscle relaxation gained.
+
+### ⚙️ Full User Control & Customization
+- **Adjustable Work Intervals:** Set your reminder to 15m, 20m, 25m, or 30m.
+- **Adjustable Break Duration:** 15s, 20s, or 30s rest periods.
+- **Zero-Friction Fallback:** If "Display over other apps" permission is not yet granted, LookAway seamlessly falls back to a full-screen break screen so you never miss a reminder.
+- **Harmonic Chime & Haptic Feedback:** Subtle completion chime and gentle haptic pulse when the 20 seconds conclude so you don't even have to look at your screen during your break.
+- **Auto-Start on Boot:** Restarts tracking automatically when your device reboots.
 
 ---
 
-## 🚀 Installation & Build
+## 🛠️ Tech Stack & Architecture
 
-### Install Pre-built Debug APK
-If you have an Android device connected via USB or wireless debugging:
+- **Operating System:** Android 8.0+ (API Level 26–35)
+- **UI Toolkit:** Jetpack Compose with Material 3 Dark Theme
+- **Image & Animation Engine:** Coil 2.7.0 (`coil-gif`) for hardware-accelerated animated GIF/WebP decoding
+- **Overlay Engine:** Android `WindowManager` with `TYPE_APPLICATION_OVERLAY`
+- **Background Execution:** Android Foreground Service with low-priority non-intrusive status notification
+- **Lifecycle & Screen Detection:** BroadcastReceiver for `ACTION_SCREEN_ON`, `ACTION_SCREEN_OFF`, and `ACTION_USER_PRESENT`
+- **Testing:** JUnit 4 + Kotlin test suite
+
+---
+
+## 🚀 Getting Started
+
+### Method 1: Install Pre-built APK (Recommended)
+1. Download `lookaway-v1.1.0.apk` from the [Latest Release](https://github.com/Yashwant00CR7/lookaway/releases/latest).
+2. Tap the downloaded file to install on your Android device (enable "Install unknown apps" if prompted).
+3. Open **LookAway**, grant the **"Display over other apps"** permission, and tap **Start Tracking**.
+
+### Method 2: Install via ADB
 ```bash
-adb install lookaway-debug.apk
+adb install lookaway-v1.1.0.apk
 ```
 
-### Build from Source
+### Method 3: Build from Source
 ```bash
-cd android
+git clone git@github-personal:Yashwant00CR7/lookaway.git
+cd lookaway/android
+
+# Build Debug APK
 ./gradlew assembleDebug
-```
-The APK will be generated at: `android/app/build/outputs/apk/debug/app-debug.apk`.
 
-### Run Unit Tests
-```bash
-cd android
+# Run Unit Tests
 ./gradlew test
 ```
+The output APK will be located at `android/app/build/outputs/apk/debug/app-debug.apk`.
 
 ---
 
-## 🗺️ Roadmap
-- [x] **Milestone 1**: LookAway Android v1.0 (Screen time monitoring, smart reset, full-screen break overlay, stats dashboard).
-- [ ] **Milestone 2**: LookAway macOS Desktop v2.0 (Native Swift Menu Bar app with system idle detection and menu bar countdown).
+## 📄 License
+This project is open-source and available under the [MIT License](LICENSE).
+
+---
+
+*Remember: Every 20 minutes, look 20 feet away for 20 seconds. Your eyes will thank you!* 👁️✨

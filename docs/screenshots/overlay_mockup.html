@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  body {
+    width: 412px;
+    height: 892px;
+    background-color: #0b0f19;
+    color: #F8FAFC;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  /* Background Simulated App (e.g. Reader / Social feed) */
+  .bg-app {
+    width: 100%;
+    height: 100%;
+    background: #0f172a;
+    display: flex;
+    flex-direction: column;
+    filter: blur(4px) brightness(0.45);
+    transform: scale(1.02);
+  }
+  .bg-header {
+    height: 60px;
+    background: #1e293b;
+    border-bottom: 1px solid #334155;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .bg-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #475569;
+  }
+  .bg-bar {
+    height: 12px;
+    border-radius: 6px;
+    background: #334155;
+  }
+  .bg-content {
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .bg-card {
+    background: #1e293b;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .bg-line {
+    height: 14px;
+    border-radius: 4px;
+    background: #334155;
+  }
+
+  /* Overlay Layer */
+  .overlay-scrim {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 10;
+  }
+
+  .status-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 38px;
+    padding: 8px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #94A3B8;
+  }
+
+  /* Anime Character Animation Stage */
+  .anime-container {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .anime-glow {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.4) 0%, rgba(14, 165, 233, 0) 70%);
+    border-radius: 50%;
+    filter: blur(12px);
+    animation: pulse 2s infinite ease-in-out;
+  }
+
+  .anime-character {
+    position: relative;
+    z-index: 2;
+    width: 190px;
+    height: 190px;
+    object-fit: contain;
+    filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.6));
+  }
+
+  /* Overlay Dialog / Banner */
+  .dialog-card {
+    background: rgba(30, 41, 59, 0.94);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 28px;
+    padding: 24px;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+  }
+
+  .badge {
+    background: rgba(56, 189, 248, 0.15);
+    color: #38BDF8;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .dialog-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #F8FAFC;
+    margin-bottom: 6px;
+  }
+
+  .dialog-subtitle {
+    font-size: 13px;
+    color: #94A3B8;
+    line-height: 1.4;
+    margin-bottom: 20px;
+  }
+
+  /* 20-Second Countdown Dial */
+  .countdown-container {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 22px;
+  }
+
+  .countdown-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .countdown-bg {
+    fill: none;
+    stroke: #334155;
+    stroke-width: 6;
+  }
+
+  .countdown-bar {
+    fill: none;
+    stroke: #38BDF8;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 251.2;
+    stroke-dashoffset: 75; /* ~14s remaining */
+  }
+
+  .countdown-number {
+    font-size: 26px;
+    font-weight: 800;
+    color: #38BDF8;
+  }
+
+  .countdown-unit {
+    font-size: 11px;
+    font-weight: 600;
+    color: #94A3B8;
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .btn-snooze {
+    flex: 1;
+    background: #334155;
+    color: #E2E8F0;
+    border: none;
+    border-radius: 14px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .btn-dismiss {
+    flex: 1;
+    background: linear-gradient(135deg, #0284C7, #0369A1);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 14px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Simulated Phone Status Bar -->
+  <div class="status-bar">
+    <span>09:41</span>
+    <div style="display: flex; gap: 6px;">
+      <span>5G</span>
+      <span>100%</span>
+    </div>
+  </div>
+
+  <!-- Background App (Dimmed / Blurred) -->
+  <div class="bg-app">
+    <div class="bg-header">
+      <div class="bg-avatar"></div>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+        <div class="bg-bar" style="width: 50%;"></div>
+        <div class="bg-bar" style="width: 30%; height: 8px;"></div>
+      </div>
+    </div>
+    <div class="bg-content">
+      <div class="bg-card">
+        <div class="bg-line" style="width: 80%;"></div>
+        <div class="bg-line" style="width: 95%;"></div>
+        <div class="bg-line" style="width: 65%;"></div>
+        <div style="height: 120px; background: #334155; border-radius: 12px; margin-top: 8px;"></div>
+      </div>
+      <div class="bg-card">
+        <div class="bg-line" style="width: 85%;"></div>
+        <div class="bg-line" style="width: 70%;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Foreground LookAway Overlay -->
+  <div class="overlay-scrim">
+    <div class="anime-container">
+      <div class="anime-glow"></div>
+      <!-- Transparent Anime Character SVG/Graphic -->
+      <svg class="anime-character" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Floating Goku-style Super Saiyan chibi sticker avatar -->
+        <circle cx="100" cy="100" r="90" fill="#0284C7" fill-opacity="0.1" />
+        <!-- Aura sparks -->
+        <path d="M40 70 L48 55 L55 68 Z" fill="#38BDF8" />
+        <path d="M160 70 L152 55 L145 68 Z" fill="#38BDF8" />
+        <path d="M100 20 L108 38 L92 38 Z" fill="#FBBF24" />
+        <path d="M70 30 L80 48 L65 45 Z" fill="#FBBF24" />
+        <path d="M130 30 L120 48 L135 45 Z" fill="#FBBF24" />
+        <!-- Spiky Hair -->
+        <polygon points="100,25 75,65 125,65" fill="#FDE047" stroke="#CA8A04" stroke-width="3" />
+        <polygon points="65,38 50,85 90,75" fill="#FDE047" stroke="#CA8A04" stroke-width="3" />
+        <polygon points="135,38 150,85 110,75" fill="#FDE047" stroke="#CA8A04" stroke-width="3" />
+        <polygon points="40,65 30,110 70,95" fill="#FACC15" stroke="#CA8A04" stroke-width="3" />
+        <polygon points="160,65 170,110 130,95" fill="#FACC15" stroke="#CA8A04" stroke-width="3" />
+        <!-- Face -->
+        <path d="M60 85 Q100 135 140 85 Q145 140 100 155 Q55 140 60 85 Z" fill="#FED7AA" stroke="#FDBA74" stroke-width="2" />
+        <!-- Eyes (Determined look) -->
+        <path d="M75 105 L90 108 L88 116 L76 114 Z" fill="#0284C7" stroke="#0F172A" stroke-width="2" />
+        <path d="M125 105 L110 108 L112 116 L124 114 Z" fill="#0284C7" stroke="#0F172A" stroke-width="2" />
+        <!-- Determined Eyebrows -->
+        <path d="M72 100 L93 105" stroke="#0F172A" stroke-width="4" stroke-linecap="round" />
+        <path d="M128 100 L107 105" stroke="#0F172A" stroke-width="4" stroke-linecap="round" />
+        <!-- Confident Smile -->
+        <path d="M92 132 Q100 137 108 132" stroke="#9A3412" stroke-width="3" stroke-linecap="round" fill="none" />
+        <!-- Gi Collar (Orange/Blue) -->
+        <path d="M70 150 L100 178 L130 150 L145 195 L55 195 Z" fill="#EA580C" stroke="#C2410C" stroke-width="2" />
+        <path d="M85 150 L100 172 L115 150 Z" fill="#1D4ED8" />
+      </svg>
+    </div>
+
+    <div class="dialog-card">
+      <div class="badge">20-20-20 Eye Break</div>
+      <div class="dialog-title">Look 20 Feet Away!</div>
+      <div class="dialog-subtitle">Relax your ciliary muscles. Focus on a distant stationary object for 20 seconds.</div>
+      
+      <div class="countdown-container">
+        <svg class="countdown-svg" viewBox="0 0 90 90">
+          <circle class="countdown-bg" cx="45" cy="45" r="40" />
+          <circle class="countdown-bar" cx="45" cy="45" r="40" />
+        </svg>
+        <div style="display: flex; flex-direction: column; align-items: center; z-index: 2;">
+          <span class="countdown-number">14</span>
+          <span class="countdown-unit">sec</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-snooze">Snooze +5m</button>
+        <button class="btn-dismiss">Done</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
