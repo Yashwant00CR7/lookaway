@@ -45,8 +45,16 @@ LookAway doesn't naively fire alarms if you haven't even been using your screen:
 
 ## 📱 Features
 
-- **Soothing Full-Screen Break Overlay**: When 20 minutes of screen time elapse, a peaceful midnight-blue screen appears with an animated 20-second circular countdown ring, gentle guidance, and Snooze/Skip buttons.
-- **Full-Screen Intent**: Uses standard Android alarm-style full-screen intents (`USE_FULL_SCREEN_INTENT`) to show the break overlay over any running app without requiring intrusive "Draw over other apps" permissions.
+- **Floating Anime Animation Overlay over other apps**: When 20 minutes of screen time elapse, a soothing semi-transparent overlay appears directly on top of whatever app you are using (WhatsApp, YouTube, games, browser) featuring an animated anime character with a **transparent background** (isolated character sticker, no solid box) and a 20-second circular countdown ring!
+- **Curated Famous Anime Roster + Custom Web URL**:
+  - **Goku** (Dragon Ball Z)
+  - **Naruto** (Naruto Shippuden)
+  - **Luffy** (One Piece)
+  - **Anya Forger** (Spy x Family)
+  - **Pikachu** (Pokémon)
+  - **Totoro** (My Neighbor Totoro)
+  - **Custom Web URL**: Paste any transparent GIF or animated WebP link from the web to display your own favorite character!
+- **Zero-Friction Fallback**: If "Display over other apps" permission hasn't been granted yet, LookAway gracefully falls back to the Full-Screen alarm intent so you never miss a break.
 - **Harmonic Chime & Haptic Pulse**: Plays a subtle completion tone and gentle vibration when the 20 seconds conclude so you don't even have to look at the screen during your break.
 - **Today's Eye Health Dashboard**:
   - Breaks Taken Today

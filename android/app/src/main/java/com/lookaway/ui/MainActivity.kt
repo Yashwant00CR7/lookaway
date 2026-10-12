@@ -41,13 +41,34 @@ class MainActivity : ComponentActivity() {
                 val timerSnapshot by viewModel.timerState.collectAsStateWithLifecycle()
                 val dailyStats by viewModel.dailyStats.collectAsStateWithLifecycle()
                 val preferences by viewModel.preferences.collectAsStateWithLifecycle()
+                val selectedCharacter by viewModel.selectedCharacter.collectAsStateWithLifecycle()
+                val canDrawOverlays by viewModel.canDrawOverlays.collectAsStateWithLifecycle()
 
                 DashboardScreen(
                     timerSnapshot = timerSnapshot,
                     dailyStats = dailyStats,
                     preferences = preferences,
+                    selectedCharacter = selectedCharacter,
+                    canDrawOverlays = canDrawOverlays,
                     onToggleTracking = { viewModel.toggleTracking() },
-                    onSavePreferences = { viewModel.savePreferences(it) }
+                    onSavePreferences = { viewModel.savePreferences(it) },
+                    onSelectAnimeCharacter = { id, customUrl ->
+                        viewModel.selectAnimeCharacter(id, customUrl)
+                    },
+                    onTestFloatingOverlay = {
+                        viewModel.testFloatingOverlay()
+                    },
+                    onRequestOverlayPermission = {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            try {
+                                val intent = Intent(
+                                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                    Uri.parse("package:$packageName")
+                                )
+                                startActivity(intent)
+                            } catch (_: Exception) {}
+                        }
+                    }
                 )
             }
         }

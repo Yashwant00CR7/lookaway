@@ -17,6 +17,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+import android.os.Build
+import android.provider.Settings
+import com.lookaway.data.AnimeCharacter
+
 class DashboardViewModel(application: Application) : AndroidViewModel(application) {
 
     private val statsRepository = StatsRepository(SharedPrefsKeyValueStore(application))
@@ -34,10 +38,36 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     private val _preferences = MutableStateFlow(statsRepository.getPreferences())
     val preferences: StateFlow<UserPreferences> = _preferences.asStateFlow()
 
+    private val _selectedCharacter = MutableStateFlow(
+        AnimeCharacter.getOrDefault(
+            id = _preferences.value.selectedAnimeCharacterId,
+            customUrl = _preferences.value.customAnimeUrl
+        )
+    )
+    val selectedCharacter: StateFlow<AnimeCharacter> = _selectedCharacter.asStateFlow()
+
+    private val _canDrawOverlays = MutableStateFlow(checkOverlayPermission())
+    val canDrawOverlays: StateFlow<Boolean> = _canDrawOverlays.asStateFlow()
+
+    fun checkOverlayPermission(): Boolean {
+        val app = getApplication<Application>()
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Settings.canDrawOverlays(app)
+        } else {
+            true
+        }
+    }
+
     fun refreshStats() {
         viewModelScope.launch {
             _dailyStats.value = statsRepository.getStatsForDate()
-            _preferences.value = statsRepository.getPreferences()
+            val prefs = statsRepository.getPreferences()
+            _preferences.value = prefs
+            _selectedCharacter.value = AnimeCharacter.getOrDefault(
+                id = prefs.selectedAnimeCharacterId,
+                customUrl = prefs.customAnimeUrl
+            )
+            _canDrawOverlays.value = checkOverlayPermission()
         }
     }
 
@@ -61,6 +91,24 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
         val app = getApplication<Application>()
         statsRepository.updatePreferences(newPreferences)
         _preferences.value = newPreferences
+        _selectedCharacter.value = AnimeCharacter.getOrDefault(
+            id = newPreferences.selectedAnimeCharacterId,
+            customUrl = newPreferences.customAnimeUrl
+        )
         LookAwayService.reloadSettings(app)
+    }
+
+    fun selectAnimeCharacter(id: String, customUrl: String) {
+        val current = preferences.value
+        val updated = current.copy(
+            selectedAnimeCharacterId = id,
+            customAnimeUrl = customUrl
+        )
+        savePreferences(updated)
+    }
+
+    fun testFloatingOverlay() {
+        val app = getApplication<Application>()
+        LookAwayService.showTestOverlay(app)
     }
 }

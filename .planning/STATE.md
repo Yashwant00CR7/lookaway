@@ -1,22 +1,22 @@
 # GSD Project State
 
-**Active Milestone:** v1.0 - LookAway Android (Completed) -> v2.0 macOS Desktop (Next)
-**Current Phase:** Phase 1 - LookAway Android App
+**Active Milestone:** v1.1 - LookAway Anime Floating Overlay (Completed)
+**Current Phase:** Phase 2 - Floating Anime Animation Overlay
 **Status:** Complete
-**Last Updated:** 2026-10-08 15:58:00
+**Last Updated:** 2026-10-12 13:03:00
 
 ## Active Decisions & Constraints
-- **Platform Strategy:** Android app completed in Milestone 1; macOS desktop app queued for Milestone 2.
-- **Repository Structure:** Monorepo at `~/Downloads/Personal Projects/lookaway/` containing `android/` and ready for `macos/`.
-- **Tracking Mechanism:** Battery-efficient screen-on time tracking (`ACTION_SCREEN_ON` / `ACTION_SCREEN_OFF`). Camera iris monitoring rejected as battery-draining and privacy-invasive.
-- **Smart Reset Policy:** Off >= 20s resets the 20-minute countdown; off < 20s pauses and resumes.
-- **Break Experience:** Full-screen intent with 20s animated circular countdown, audio chime, and haptic feedback.
+- **Overlay Window:** Managed by Android `WindowManager` (`TYPE_APPLICATION_OVERLAY`) directly over any open app.
+- **Animation Format:** Transparent background animated GIFs/WebPs (only the anime character sticker is shown).
+- **Presets & Custom URL:** Curated famous anime characters (Goku, Naruto, Luffy, Anya, Pikachu, Totoro) + custom Web URL input.
+- **Image Engine:** Coil 2.7.0 with `ImageDecoderDecoder` / `GifDecoder` for transparent animated GIF/WebP playback.
+- **Permission & Fallback:** Guided `SYSTEM_ALERT_WINDOW` card with 1-tap setup; fallback to Full-Screen Activity if permission is not yet granted.
 - **Git Identity:** Yashwant00CR7 / 10a19yashwant@gmail.com, personal SSH host `github-personal`.
 
 ## Current Position
-- Phase: 01-android
+- Phase: 02-anime-overlay
 - Total Plans: 1
 - Completed Plans: 1
 - Status: VERIFIED & COMPLETE
-- Delivered Artifact: `lookaway-debug.apk` (15MB)
-- Next Action: Ready to start Milestone 2 (macOS Desktop Menu Bar App) or test on device.
+- Delivered Artifact: `lookaway-debug.apk` (19MB)
+- Next Action: Ready to install and test on device, or proceed to macOS desktop milestone when requested.

@@ -1,38 +1,31 @@
-# Phase Context: 01-android (LookAway Android)
+# Phase Context: 02-anime-overlay (Anime Floating Animation Overlay)
 
 ## Problem & User Intent
-Staring at screens continuously causes digital eye strain and dry eyes due to a 50% drop in blink rate and continuous ciliary muscle accommodation. The medically proven solution (endorsed by the American Academy of Ophthalmology) is the **20-20-20 rule**: every 20 minutes, look at an object 20 feet away for at least 20 seconds.
-Camera-based iris/blink tracking was evaluated and rejected as battery-draining, error-prone, and privacy-invasive overkill. Instead, LookAway tracks continuous screen-on time via lightweight OS broadcast receivers and triggers a calming full-screen 20-second break prompt.
+When 20 minutes of continuous screen time expires, rather than only relying on a full-screen app switch, the user wants a delightful, non-jarring animated overlay directly on top of *whichever app they are currently using* (YouTube, games, messaging, browser).
+The animation must feature a famous anime character (e.g. Goku, Naruto, Luffy, Anya, Pikachu, Totoro) with a **transparent background** (isolated character sticker, no solid box) so only the character appears on the screen alongside the 20-second countdown and 20-20-20 guidance.
+Users must also be able to choose from a curated web gallery or paste any custom web URL of their own choice.
 
 ## Mental Model & Core Abstractions
-1. **TimerStateMachine:**
-   - States: `STOPPED`, `RUNNING`, `PAUSED`, `BREAK_ACTIVE`.
-   - Transitions driven by:
-     - User Start/Stop toggles.
-     - Screen on/off broadcasts.
-     - Second-by-second coroutine ticks.
-     - Timer expiration (triggers break).
-     - Break completion or skip/snooze actions.
-2. **SmartResetPolicy:**
-   - Detects `screen_off_timestamp`.
-   - When screen turns on again: `elapsedScreenOff = now - screen_off_timestamp`.
-   - If `elapsedScreenOff >= breakDurationSeconds` (default 20s): resets timer to full interval (default 20 min).
-   - If `elapsedScreenOff < breakDurationSeconds`: preserves accumulated screen time and resumes countdown.
-3. **LookAwayForegroundService:**
-   - Maintains continuous operation in the background using an ongoing notification with current countdown status.
-   - Registers dynamic receiver for `Intent.ACTION_SCREEN_ON` and `Intent.ACTION_SCREEN_OFF`.
-   - Fires a high-priority Full-Screen Intent notification launching `BreakActivity` when interval expires.
-4. **BreakOverlayActivity:**
-   - Calm, non-jarring fullscreen Compose UI.
-   - Smooth animated circular progress ring counting down 20 seconds.
-   - Soothing instruction: "Look at an object at least 20 feet (6m) away".
-   - Plays gentle completion sound chime and haptic buzz.
-   - "Skip" and "Snooze (5m)" actions.
-5. **LookAwayRepository & Preferences:**
-   - Stores settings: work duration (default 20 min), break duration (default 20 sec), sound enabled, vibration enabled.
-   - Stores daily statistics: today's date, breaks completed count, breaks skipped count, total tracked screen-on seconds.
+1. **AnimeCharacter Model & Presets:**
+   - Pre-configured transparent anime character sticker animations from reliable web CDNs (Giphy/Tenor transparent stickers or SVG/WebP).
+   - Custom URL mode allowing any transparent GIF or animated WebP URL.
+   - Stored in `StatsRepository` / `UserPreferences`.
+2. **FloatingOverlayManager:**
+   - Checks `Settings.canDrawOverlays(context)`.
+   - Uses `WindowManager` to inflate a `ComposeView` with `TYPE_APPLICATION_OVERLAY`, `FLAG_NOT_TOUCH_MODAL` / `FLAG_WATCH_OUTSIDE_TOUCH`.
+   - Safely adds and removes overlay views from the window hierarchy without memory leaks or window token crashes.
+3. **FloatingBreakOverlayView (Compose):**
+   - Translucent soothing background scrim (`Color(0xCC0B132B)`).
+   - Animated anime character rendered using Coil's `AsyncImage` with `ImageDecoderDecoder` / `GifDecoder` for transparent animation.
+   - Circular animated 20-second countdown timer.
+   - Action buttons: "Skip" and "Snooze 5m".
+   - Plays chime sound and haptic pulse on finish, then auto-removes overlay.
+4. **Overlay Permission Flow:**
+   - In `MainActivity`: Detects `Settings.canDrawOverlays(context)`.
+   - Shows a dedicated "Enable Anime Overlay over Apps" card with 1-tap intent to `Settings.ACTION_MANAGE_OVERLAY_PERMISSION`.
+   - If permission is absent when break triggers, gracefully falls back to `BreakActivity` (full screen intent).
 
 ## Verification & Backpressure Seams
-- Unit Tests: `./gradlew test` (Robolectric / JUnit 4 tests validating StateMachine transitions, SmartResetPolicy elapsed times, and statistics calculations)
-- Compilation & Lint: `./gradlew compileDebugKotlin`
-- Build & Packaging: `./gradlew assembleDebug` (generates installable `app-debug.apk`)
+- Unit Tests: `./gradlew test` (Robolectric / JUnit tests for AnimeCharacter data layer and storage).
+- Compilation: `./gradlew compileDebugKotlin`
+- Assembly: `./gradlew assembleDebug`
