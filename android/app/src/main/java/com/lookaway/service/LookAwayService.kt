@@ -30,6 +30,7 @@ class LookAwayService : Service() {
         const val ACTION_SKIP_BREAK = "com.lookaway.action.SKIP_BREAK"
         const val ACTION_SNOOZE_BREAK = "com.lookaway.action.SNOOZE_BREAK"
         const val ACTION_RELOAD_SETTINGS = "com.lookaway.action.RELOAD_SETTINGS"
+        const val ACTION_SHOW_TEST_OVERLAY = "com.lookaway.action.SHOW_TEST_OVERLAY"
 
         private val _timerState = MutableStateFlow(TimerSnapshot())
         val timerState: StateFlow<TimerSnapshot> = _timerState.asStateFlow()
@@ -43,6 +44,13 @@ class LookAwayService : Service() {
             } else {
                 context.startService(intent)
             }
+        }
+
+        fun showTestOverlay(context: Context) {
+            val intent = Intent(context, LookAwayService::class.java).apply {
+                action = ACTION_SHOW_TEST_OVERLAY
+            }
+            context.startService(intent)
         }
 
         fun stopService(context: Context) {
@@ -87,6 +95,7 @@ class LookAwayService : Service() {
     private lateinit var notificationHelper: NotificationHelper
     private lateinit var statsRepository: StatsRepository
     private lateinit var soundManager: SoundManager
+    private lateinit var floatingOverlayManager: FloatingOverlayManager
     private var screenReceiver: ScreenBroadcastReceiver? = null
 
     private lateinit var stateMachine: TimerStateMachine
@@ -96,6 +105,7 @@ class LookAwayService : Service() {
         notificationHelper = NotificationHelper(this)
         statsRepository = StatsRepository(SharedPrefsKeyValueStore(this))
         soundManager = SoundManager(this)
+        floatingOverlayManager = FloatingOverlayManager(this)
 
         initStateMachine()
         registerScreenReceiver()
@@ -111,15 +121,21 @@ class LookAwayService : Service() {
             onBreakCompleted = {
                 statsRepository.recordBreakCompleted()
                 notificationHelper.dismissBreakAlertNotification()
+                floatingOverlayManager.hideOverlay()
                 if (prefs.soundEnabled) soundManager.playBreakCompleteTone()
                 if (prefs.vibrationEnabled) soundManager.vibrateGentle()
             },
             onBreakSkipped = {
                 statsRepository.recordBreakSkipped()
                 notificationHelper.dismissBreakAlertNotification()
+                floatingOverlayManager.hideOverlay()
             },
             onBreakTriggered = {
-                notificationHelper.showBreakAlertNotification()
+                if (prefs.useFloatingOverlay && floatingOverlayManager.canDrawOverlays) {
+                    floatingOverlayManager.showOverlay()
+                } else {
+                    notificationHelper.showBreakAlertNotification()
+                }
                 if (prefs.vibrationEnabled) soundManager.vibrateGentle()
             }
         )
@@ -194,6 +210,9 @@ class LookAwayService : Service() {
                 initStateMachine()
                 stateMachine.start()
             }
+            ACTION_SHOW_TEST_OVERLAY -> {
+                floatingOverlayManager.showOverlay()
+            }
         }
         _timerState.value = stateMachine.snapshot
         return START_STICKY
@@ -237,6 +256,7 @@ class LookAwayService : Service() {
 
     override fun onDestroy() {
         stopTicker()
+        floatingOverlayManager.hideOverlay()
         screenReceiver?.let {
             try {
                 unregisterReceiver(it)
