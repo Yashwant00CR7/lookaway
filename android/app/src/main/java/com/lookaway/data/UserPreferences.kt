@@ -5,7 +5,10 @@ data class UserPreferences(
     val breakDurationSeconds: Int = 20,
     val soundEnabled: Boolean = true,
     val vibrationEnabled: Boolean = true,
-    val trackingEnabled: Boolean = true
+    val trackingEnabled: Boolean = true,
+    val selectedAnimeCharacterId: String = AnimeCharacter.DEFAULT_CHARACTER_ID,
+    val customAnimeUrl: String = "",
+    val useFloatingOverlay: Boolean = true
 ) {
     val workDurationSeconds: Int
         get() = workDurationMinutes * 60

@@ -12,6 +12,9 @@ class StatsRepository(private val store: KeyValueStore) {
         private const val KEY_SOUND_ENABLED = "pref_sound_enabled"
         private const val KEY_VIBRATION_ENABLED = "pref_vibration_enabled"
         private const val KEY_TRACKING_ENABLED = "pref_tracking_enabled"
+        private const val KEY_ANIME_ID = "pref_anime_id"
+        private const val KEY_CUSTOM_ANIME_URL = "pref_custom_anime_url"
+        private const val KEY_USE_FLOATING_OVERLAY = "pref_use_floating_overlay"
 
         private const val PREFIX_COMPLETED = "stats_completed_"
         private const val PREFIX_SKIPPED = "stats_skipped_"
@@ -29,7 +32,11 @@ class StatsRepository(private val store: KeyValueStore) {
             breakDurationSeconds = store.getInt(KEY_BREAK_DURATION_SEC, 20),
             soundEnabled = store.getBoolean(KEY_SOUND_ENABLED, true),
             vibrationEnabled = store.getBoolean(KEY_VIBRATION_ENABLED, true),
-            trackingEnabled = store.getBoolean(KEY_TRACKING_ENABLED, true)
+            trackingEnabled = store.getBoolean(KEY_TRACKING_ENABLED, true),
+            selectedAnimeCharacterId = store.getString(KEY_ANIME_ID, AnimeCharacter.DEFAULT_CHARACTER_ID)
+                ?: AnimeCharacter.DEFAULT_CHARACTER_ID,
+            customAnimeUrl = store.getString(KEY_CUSTOM_ANIME_URL, "") ?: "",
+            useFloatingOverlay = store.getBoolean(KEY_USE_FLOATING_OVERLAY, true)
         )
     }
 
@@ -39,6 +46,9 @@ class StatsRepository(private val store: KeyValueStore) {
         store.putBoolean(KEY_SOUND_ENABLED, preferences.soundEnabled)
         store.putBoolean(KEY_VIBRATION_ENABLED, preferences.vibrationEnabled)
         store.putBoolean(KEY_TRACKING_ENABLED, preferences.trackingEnabled)
+        store.putString(KEY_ANIME_ID, preferences.selectedAnimeCharacterId)
+        store.putString(KEY_CUSTOM_ANIME_URL, preferences.customAnimeUrl)
+        store.putBoolean(KEY_USE_FLOATING_OVERLAY, preferences.useFloatingOverlay)
     }
 
     fun getStatsForDate(date: String = todayDateString()): DailyStats {
