@@ -12,8 +12,7 @@
 
 ## Download
 
-- **Google Drive:** [Download lookaway-v1.2.0.apk](https://drive.google.com/file/d/1BL4yDeNgIfSQZJTNRac0Rc_lRfgrZmWY/view?usp=drivesdk) *(v1.2.0 direct build)*
-- **GitHub Release:** [Download v1.1.0 on GitHub](https://github.com/Yashwant00CR7/lookaway/releases/latest)
+[Download Latest APK](https://github.com/Yashwant00CR7/lookaway/releases/latest/download/lookaway-v1.1.0.apk) *(Direct install on Android 8.0+)*
 
 ---
 
@@ -126,7 +125,7 @@ When 20 minutes of screen time elapse, LookAway renders an isolated floating cha
 ## Getting Started
 
 ### Method 1: Install Pre-built APK
-1. Download `lookaway-v1.2.0.apk` from [Google Drive](https://drive.google.com/file/d/1BL4yDeNgIfSQZJTNRac0Rc_lRfgrZmWY/view?usp=drivesdk).
+1. Download `lookaway-v1.1.0.apk` from the [GitHub Release](https://github.com/Yashwant00CR7/lookaway/releases/latest).
 2. Tap the file to install on your Android device (enable "Install unknown apps" if prompted).
 3. Open **LookAway**, grant **Display over other apps**, and tap **Start Tracking**.
 
