@@ -1,31 +1,26 @@
-# Phase Context: 02-anime-overlay (Anime Floating Animation Overlay)
+# Phase Context: Media Pause, Landscape Support, Clean UI & Drive Upload
 
 ## Problem & User Intent
-When 20 minutes of continuous screen time expires, rather than only relying on a full-screen app switch, the user wants a delightful, non-jarring animated overlay directly on top of *whichever app they are currently using* (YouTube, games, messaging, browser).
-The animation must feature a famous anime character (e.g. Goku, Naruto, Luffy, Anya, Pikachu, Totoro) with a **transparent background** (isolated character sticker, no solid box) so only the character appears on the screen alongside the 20-second countdown and 20-20-20 guidance.
-Users must also be able to choose from a curated web gallery or paste any custom web URL of their own choice.
+The user requested four key enhancements for LookAway:
+1. Pause active background/foreground music or video playback (e.g., Spotify, YouTube, browsers, media players) whenever the break overlay triggers.
+2. Support horizontal phone orientation (landscape mode) inside the floating break overlay so it renders elegantly without squishing or clipping when holding the device sideways.
+3. Overhaul the user interface to remove mostly all emojis, sparkle badges, and AI-generated marketing slop, transitioning to a clean, professional, minimalist dark utility aesthetic.
+4. Build the updated APK and upload it directly to the user's `Lookaway` folder in Google Drive.
 
 ## Mental Model & Core Abstractions
-1. **AnimeCharacter Model & Presets:**
-   - Pre-configured transparent anime character sticker animations from reliable web CDNs (Giphy/Tenor transparent stickers or SVG/WebP).
-   - Custom URL mode allowing any transparent GIF or animated WebP URL.
-   - Stored in `StatsRepository` / `UserPreferences`.
-2. **FloatingOverlayManager:**
-   - Checks `Settings.canDrawOverlays(context)`.
-   - Uses `WindowManager` to inflate a `ComposeView` with `TYPE_APPLICATION_OVERLAY`, `FLAG_NOT_TOUCH_MODAL` / `FLAG_WATCH_OUTSIDE_TOUCH`.
-   - Safely adds and removes overlay views from the window hierarchy without memory leaks or window token crashes.
-3. **FloatingBreakOverlayView (Compose):**
-   - Translucent soothing background scrim (`Color(0xCC0B132B)`).
-   - Animated anime character rendered using Coil's `AsyncImage` with `ImageDecoderDecoder` / `GifDecoder` for transparent animation.
-   - Circular animated 20-second countdown timer.
-   - Action buttons: "Skip" and "Snooze 5m".
-   - Plays chime sound and haptic pulse on finish, then auto-removes overlay.
-4. **Overlay Permission Flow:**
-   - In `MainActivity`: Detects `Settings.canDrawOverlays(context)`.
-   - Shows a dedicated "Enable Anime Overlay over Apps" card with 1-tap intent to `Settings.ACTION_MANAGE_OVERLAY_PERMISSION`.
-   - If permission is absent when break triggers, gracefully falls back to `BreakActivity` (full screen intent).
+- **Media Focus Controller (`MediaPauseController`):** Encapsulates Android's `AudioManager` and `AudioFocusRequest` (API 26+) / legacy audio focus API. Requests transient audio focus on break display and abandons audio focus on break exit, allowing audio/video players to pause and seamlessly auto-resume.
+- **Adaptive Overlay Layout (`FloatingAnimeOverlayView`):** Detects device orientation (portrait vs landscape) or dimensions via `BoxWithConstraints` / `LocalConfiguration.current.orientation`. In portrait, renders the vertical column; in landscape, renders a balanced side-by-side two-column view (character sticker left, countdown ring & controls right).
+- **Minimalist Design System:** Pure technical clarity. Standard Material Symbols, clean slate/zinc color tokens, concise labels ("Start Tracking", "Active", "Paused", "20-20-20 Rule"), elimination of childish emojis across all screens.
+- **Drive Uploader:** Node script utilizing the user's authenticated Google Drive credentials from keychain to upload the generated APK into the `Lookaway` folder (`1sDX0yXR4dipOZknZ4HzUujNnZ_GJ3yno`).
+
+## Locked Architectural Decisions
+- **Decision 1 (Media Pause):** Transient audio focus (`AUDIOFOCUS_GAIN_TRANSIENT`) with auto-abandon on break completion/dismiss/snooze, ensuring clean auto-resume of playback.
+- **Decision 2 (Landscape Overlay):** Two-column split layout for landscape mode, with safety paddings for system insets/notches.
+- **Decision 3 (UI Cleanup):** Complete removal of emojis, sparkles, and exaggerated AI copy; streamlined dark utility theme with subtle slate/cyan accents.
+- **Decision 4 (Drive Upload):** Direct multipart upload to Google Drive v3 endpoint for the `Lookaway` folder ID.
+- **Decision 5 (Git Identity):** Personal account `Yashwant00CR7` / `10a19yashwant@gmail.com` on `github-personal`.
 
 ## Verification & Backpressure Seams
-- Unit Tests: `./gradlew test` (Robolectric / JUnit tests for AnimeCharacter data layer and storage).
-- Compilation: `./gradlew compileDebugKotlin`
-- Assembly: `./gradlew assembleDebug`
+- Unit Tests: `./gradlew test` (verifying state machine, repositories, media focus controller logic)
+- Build Verification: `./gradlew assembleDebug` (compilation of APK)
+- Drive Upload Verification: Querying the Google Drive folder files to confirm uploaded APK.

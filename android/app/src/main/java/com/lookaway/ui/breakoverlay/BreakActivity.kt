@@ -15,13 +15,18 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lookaway.core.SessionState
 import com.lookaway.service.LookAwayService
+import com.lookaway.service.MediaPauseController
 import kotlinx.coroutines.delay
 
 class BreakActivity : ComponentActivity() {
 
+    private val mediaPauseController by lazy { MediaPauseController(this) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         configureWindowFlags()
+
+        mediaPauseController.pauseMedia()
 
         // Tell service to enter BREAK_ACTIVE state
         LookAwayService.startBreak(this)
@@ -72,5 +77,10 @@ class BreakActivity : ComponentActivity() {
             )
         }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    override fun onDestroy() {
+        mediaPauseController.resumeMedia()
+        super.onDestroy()
     }
 }

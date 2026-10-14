@@ -34,6 +34,7 @@ import kotlinx.coroutines.delay
 class FloatingOverlayManager(private val context: Context) {
 
     private val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    private val mediaPauseController = MediaPauseController(context)
     private var overlayView: View? = null
     private var lifecycleOwner: OverlayLifecycleOwner? = null
 
@@ -126,6 +127,7 @@ class FloatingOverlayManager(private val context: Context) {
         try {
             windowManager.addView(composeView, layoutParams)
             overlayView = composeView
+            mediaPauseController.pauseMedia()
             LookAwayService.startBreak(context)
         } catch (_: Exception) {
             hideOverlay()
@@ -141,6 +143,7 @@ class FloatingOverlayManager(private val context: Context) {
         }
         lifecycleOwner?.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         lifecycleOwner = null
+        mediaPauseController.resumeMedia()
     }
 
     private class OverlayLifecycleOwner :

@@ -1,22 +1,21 @@
 # GSD Project State
 
-**Active Milestone:** v1.1 - LookAway Anime Floating Overlay (Completed)
-**Current Phase:** Phase 2 - Floating Anime Animation Overlay
+**Active Milestone:** v1.2 - Media Pause, Landscape Overlay, UI Polish & Drive Release
+**Current Phase:** Phase 3 - Media Pause, Horizontal Phone Support, Clean UI & Drive Upload
 **Status:** Complete
-**Last Updated:** 2026-10-12 13:03:00
+**Last Updated:** 2026-10-14 08:05:00
 
 ## Active Decisions & Constraints
-- **Overlay Window:** Managed by Android `WindowManager` (`TYPE_APPLICATION_OVERLAY`) directly over any open app.
-- **Animation Format:** Transparent background animated GIFs/WebPs (only the anime character sticker is shown).
-- **Presets & Custom URL:** Curated famous anime characters (Goku, Naruto, Luffy, Anya, Pikachu, Totoro) + custom Web URL input.
-- **Image Engine:** Coil 2.7.0 with `ImageDecoderDecoder` / `GifDecoder` for transparent animated GIF/WebP playback.
-- **Permission & Fallback:** Guided `SYSTEM_ALERT_WINDOW` card with 1-tap setup; fallback to Full-Screen Activity if permission is not yet granted.
-- **Git Identity:** Yashwant00CR7 / 10a19yashwant@gmail.com, personal SSH host `github-personal`.
+- **Media Pause Engine:** Managed via `MediaPauseController` requesting `AUDIOFOCUS_GAIN_TRANSIENT` and abandoning focus on break completion/exit to auto-resume playback.
+- **Horizontal/Landscape Layout:** Responsive two-column split layout via `BoxWithConstraints` (sticker left, countdown dial right).
+- **UI Aesthetic:** Minimalist dark utility design: zero emojis, crisp system typography, sleek slate surfaces with subtle cyan accents, no AI marketing slop.
+- **Google Drive Deployment:** Uploaded to folder `Lookaway` (`1sDX0yXR4dipOZknZ4HzUujNnZ_GJ3yno`) as `lookaway-v1.2.0.apk` (`1BL4yDeNgIfSQZJTNRac0Rc_lRfgrZmWY`).
+- **Git Identity:** `Yashwant00CR7` / `10a19yashwant@gmail.com`, remote `git@github-personal:Yashwant00CR7/lookaway.git`.
 
 ## Current Position
-- Phase: 02-anime-overlay
+- Phase: 03-media-pause-landscape-polish
 - Total Plans: 1
 - Completed Plans: 1
 - Status: VERIFIED & COMPLETE
-- Delivered Artifact: `lookaway-debug.apk` (19MB)
-- Next Action: Ready to install and test on device, or proceed to macOS desktop milestone when requested.
+- Delivered Artifact: `lookaway-v1.2.0.apk` (uploaded to Google Drive & local `lookaway-debug.apk`)
+- Next Action: Ready for testing on device.

@@ -64,13 +64,13 @@ fun AnimeCharacterPickerModal(
         title = {
             Column {
                 Text(
-                    text = "Choose Break Anime Character",
+                    text = "Select Overlay Companion",
                     fontWeight = FontWeight.Bold,
                     fontSize = 19.sp,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = "Transparent sticker animation displayed during the 20s break.",
+                    text = "Animated sticker displayed during 20-second breaks.",
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -195,7 +195,7 @@ fun AnimeCharacterPickerModal(
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
-                                    text = "Custom Animation from Web",
+                                    text = "Custom Web Animation",
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 14.sp,
                                     color = MaterialTheme.colorScheme.onSurface
@@ -205,7 +205,7 @@ fun AnimeCharacterPickerModal(
                             Spacer(modifier = Modifier.height(6.dp))
 
                             Text(
-                                text = "Paste a direct transparent GIF or WebP URL (e.g. from Giphy, Tenor, or personal host):",
+                                text = "Direct URL to a transparent GIF or WebP file:",
                                 fontSize = 11.sp,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -237,7 +237,7 @@ fun AnimeCharacterPickerModal(
                 },
                 shape = RoundedCornerShape(10.dp)
             ) {
-                Text("Select Character")
+                Text("Save Selection")
             }
         },
         dismissButton = {

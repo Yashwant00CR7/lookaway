@@ -22,10 +22,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Layers
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material.icons.filled.Settings
@@ -189,7 +189,7 @@ fun DashboardScreen(
                                 fontSize = 14.sp
                             )
                             Text(
-                                text = "To show the floating anime character over other apps, allow 'Display over other apps'.",
+                                text = "Allow 'Display over other apps' to enable floating break reminders.",
                                 color = Color(0xFFFFEDD5),
                                 fontSize = 12.sp,
                                 lineHeight = 16.sp
@@ -216,7 +216,7 @@ fun DashboardScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Active Anime Character Card
+            // Active Companion Animation Card
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -254,16 +254,16 @@ fun DashboardScreen(
                     Column(modifier = Modifier.weight(1f)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
-                                imageVector = Icons.Default.AutoAwesome,
+                                imageVector = Icons.Default.Palette,
                                 contentDescription = null,
-                                tint = Color(0xFFF59E0B),
+                                tint = Color(0xFF38BDF8),
                                 modifier = Modifier.size(16.dp)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = "Break Anime Character",
+                                text = "Overlay Companion",
                                 fontSize = 12.sp,
-                                color = Color(0xFFF59E0B),
+                                color = Color(0xFF38BDF8),
                                 fontWeight = FontWeight.SemiBold
                             )
                         }
@@ -308,7 +308,7 @@ fun DashboardScreen(
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(modifier = Modifier.width(6.dp))
-                    Text("Test Anime Overlay", fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                    Text("Test Overlay", fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
                 }
 
                 OutlinedButton(
@@ -321,7 +321,7 @@ fun DashboardScreen(
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(14.dp)
                 ) {
-                    Text("Test Fullscreen", fontSize = 13.sp)
+                    Text("Test Full Screen", fontSize = 13.sp)
                 }
             }
 
@@ -437,7 +437,7 @@ private fun HeroTimerCard(
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = "Next Eye Break",
+                        text = "Next Break",
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -463,7 +463,7 @@ private fun HeroTimerCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = if (isStopped) "Start Eye Protection" else "Stop Protection",
+                    text = if (isStopped) "Start Tracking" else "Stop Tracking",
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -491,7 +491,7 @@ private fun StatsCard(
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Text(
-                text = "Today's Eye Health",
+                text = "Today's Metrics",
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -505,7 +505,7 @@ private fun StatsCard(
                     icon = Icons.Default.CheckCircle,
                     iconTint = Color(0xFF10B981),
                     value = "${dailyStats.breaksCompleted}",
-                    label = "Breaks Done"
+                    label = "Completed"
                 )
                 StatItem(
                     icon = Icons.Default.VisibilityOff,
@@ -523,7 +523,7 @@ private fun StatsCard(
                     icon = Icons.Default.RemoveRedEye,
                     iconTint = Color(0xFFA855F7),
                     value = "${restSeconds}s",
-                    label = "Rest Gained"
+                    label = "Rest Earned"
                 )
             }
         }
@@ -588,14 +588,14 @@ private fun ScienceInfoCard() {
             Spacer(modifier = Modifier.width(12.dp))
             Column {
                 Text(
-                    text = "The 20-20-20 Eye Rule",
+                    text = "The 20-20-20 Rule",
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.sp,
                     color = Color(0xFF38BDF8)
                 )
                 Spacer(modifier = Modifier.height(3.dp))
                 Text(
-                    text = "Digital eye strain is caused by decreased blink rate and ciliary muscle contraction—not blue light. Gaze 20 feet away for 20 seconds every 20 minutes to restore moisture.",
+                    text = "Every 20 minutes, focus on an object 20 feet (6 meters) away for 20 seconds to relax ciliary muscle tension and replenish corneal moisture.",
                     fontSize = 12.sp,
                     lineHeight = 17.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant

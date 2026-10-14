@@ -7,9 +7,11 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -60,152 +62,312 @@ fun BreakScreen(
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = Color(0xFF0B132B) // Deep serene midnight navy
+        color = Color(0xFF090D16) // Deep slate background
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp),
+        BoxWithConstraints(
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                // Eye Icon Badge
-                Box(
+            val isLandscape = maxWidth > maxHeight
+
+            if (isLandscape) {
+                // Landscape Split Screen
+                Row(
                     modifier = Modifier
-                        .size(64.dp)
-                        .background(Color(0xFF1C2541), shape = CircleShape),
-                    contentAlignment = Alignment.Center
+                        .fillMaxSize()
+                        .padding(horizontal = 36.dp, vertical = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Icon(
-                        imageVector = if (isCompleted) Icons.Default.CheckCircle else Icons.Default.RemoveRedEye,
-                        contentDescription = "Eye Rest",
-                        tint = if (isCompleted) Color(0xFF4EBA6F) else Color(0xFF48CAE4),
-                        modifier = Modifier.size(36.dp)
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                Text(
-                    text = if (isCompleted) "Eyes Refreshed!" else "Look 20 Feet Away",
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    ),
-                    textAlign = TextAlign.Center
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    text = if (isCompleted)
-                        "Great job giving your ciliary muscles a break."
-                    else
-                        "Gaze at a distant object (~6 meters away) or out a window to relax eye strain.",
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        color = Color(0xFFB0C4DE),
-                        fontSize = 15.sp,
-                        lineHeight = 22.sp
-                    ),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
-
-                Spacer(modifier = Modifier.height(36.dp))
-
-                // Circular Countdown Ring
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.size(200.dp)
-                ) {
-                    // Background track
-                    CircularProgressIndicator(
-                        progress = { 1f },
-                        modifier = Modifier.size(200.dp),
-                        color = Color(0xFF1C2541),
-                        strokeWidth = 10.dp
-                    )
-                    // Animated progress
-                    CircularProgressIndicator(
-                        progress = { animatedProgress },
-                        modifier = Modifier.size(200.dp),
-                        color = if (isCompleted) Color(0xFF4EBA6F) else Color(0xFF00B4D8),
-                        strokeWidth = 10.dp
-                    )
-
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = if (isCompleted) "Done" else "${remainingSeconds}s",
-                            fontSize = 44.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = Color.White
-                        )
-                        Text(
-                            text = if (isCompleted) "Completed" else "Remaining",
-                            fontSize = 13.sp,
-                            color = Color(0xFF90E0EF)
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(40.dp))
-
-                // Action Controls
-                AnimatedVisibility(
-                    visible = !isCompleted,
-                    enter = fadeIn(),
-                    exit = fadeOut()
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
+                    // Left Column
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
                     ) {
-                        OutlinedButton(
-                            onClick = onSkip,
-                            shape = RoundedCornerShape(16.dp),
-                            colors = ButtonDefaults.outlinedButtonColors(
-                                contentColor = Color(0xFFE2E8F0)
-                            )
-                        ) {
-                            Text("Skip")
-                        }
-
-                        Button(
-                            onClick = onSnooze,
-                            shape = RoundedCornerShape(16.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFF1E3A8A)
-                            )
+                        Box(
+                            modifier = Modifier
+                                .size(56.dp)
+                                .background(Color(0xFF1E293B), shape = CircleShape),
+                            contentAlignment = Alignment.Center
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Snooze,
-                                contentDescription = "Snooze",
-                                modifier = Modifier.size(18.dp)
+                                imageVector = if (isCompleted) Icons.Default.CheckCircle else Icons.Default.RemoveRedEye,
+                                contentDescription = "Eye Rest",
+                                tint = if (isCompleted) Color(0xFF10B981) else Color(0xFF38BDF8),
+                                modifier = Modifier.size(32.dp)
                             )
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Text("Snooze 5m")
+                        }
+
+                        Spacer(modifier = Modifier.height(14.dp))
+
+                        Text(
+                            text = if (isCompleted) "Break Complete" else "Look 20 Feet Away",
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            ),
+                            textAlign = TextAlign.Center
+                        )
+
+                        Spacer(modifier = Modifier.height(6.dp))
+
+                        Text(
+                            text = if (isCompleted)
+                                "Ciliary muscles relaxed and tear film restored."
+                            else
+                                "Focus on a distant object (at least 6 meters away) for 20 seconds.",
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                color = Color(0xFF94A3B8),
+                                fontSize = 13.sp,
+                                lineHeight = 18.sp
+                            ),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(horizontal = 12.dp)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(28.dp))
+
+                    // Right Column
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier.size(130.dp)
+                        ) {
+                            CircularProgressIndicator(
+                                progress = { 1f },
+                                modifier = Modifier.size(130.dp),
+                                color = Color(0xFF1E293B),
+                                strokeWidth = 8.dp
+                            )
+                            CircularProgressIndicator(
+                                progress = { animatedProgress },
+                                modifier = Modifier.size(130.dp),
+                                color = if (isCompleted) Color(0xFF10B981) else Color(0xFF38BDF8),
+                                strokeWidth = 8.dp
+                            )
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text(
+                                    text = if (isCompleted) "Done" else "${remainingSeconds}s",
+                                    fontSize = 32.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White
+                                )
+                                Text(
+                                    text = if (isCompleted) "Complete" else "Remaining",
+                                    fontSize = 10.sp,
+                                    color = Color(0xFF7DD3FC)
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        AnimatedVisibility(
+                            visible = !isCompleted,
+                            enter = fadeIn(),
+                            exit = fadeOut()
+                        ) {
+                            Row(
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                OutlinedButton(
+                                    onClick = onSkip,
+                                    shape = RoundedCornerShape(10.dp),
+                                    colors = ButtonDefaults.outlinedButtonColors(
+                                        contentColor = Color(0xFFCBD5E1)
+                                    )
+                                ) {
+                                    Text("Skip", fontSize = 12.sp)
+                                }
+
+                                Spacer(modifier = Modifier.width(12.dp))
+
+                                Button(
+                                    onClick = onSnooze,
+                                    shape = RoundedCornerShape(10.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color(0xFF1E3A8A)
+                                    )
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Snooze,
+                                        contentDescription = "Snooze",
+                                        modifier = Modifier.size(14.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Text("Snooze 5m", fontSize = 12.sp)
+                                }
+                            }
+                        }
+
+                        AnimatedVisibility(
+                            visible = isCompleted,
+                            enter = fadeIn(),
+                            exit = fadeOut()
+                        ) {
+                            Button(
+                                onClick = onFinishNow,
+                                shape = RoundedCornerShape(10.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFF059669)
+                                )
+                            ) {
+                                Text("Resume Screen", color = Color.White, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                            }
                         }
                     }
                 }
-
-                AnimatedVisibility(
-                    visible = isCompleted,
-                    enter = fadeIn(),
-                    exit = fadeOut()
+            } else {
+                // Portrait Layout
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp)
                 ) {
-                    Button(
-                        onClick = onFinishNow,
-                        shape = RoundedCornerShape(16.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF059669)
-                        ),
-                        modifier = Modifier.fillMaxWidth(0.6f)
+                    Box(
+                        modifier = Modifier
+                            .size(64.dp)
+                            .background(Color(0xFF1E293B), shape = CircleShape),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Text("Resume Screen", color = Color.White, fontWeight = FontWeight.SemiBold)
+                        Icon(
+                            imageVector = if (isCompleted) Icons.Default.CheckCircle else Icons.Default.RemoveRedEye,
+                            contentDescription = "Eye Rest",
+                            tint = if (isCompleted) Color(0xFF10B981) else Color(0xFF38BDF8),
+                            modifier = Modifier.size(36.dp)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Text(
+                        text = if (isCompleted) "Break Complete" else "Look 20 Feet Away",
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        ),
+                        textAlign = TextAlign.Center
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = if (isCompleted)
+                            "Ciliary muscles relaxed and tear film restored."
+                        else
+                            "Focus on an object at least 20 feet (6 meters) away for 20 seconds.",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            color = Color(0xFF94A3B8),
+                            fontSize = 14.sp,
+                            lineHeight = 20.sp
+                        ),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(36.dp))
+
+                    // Circular Countdown Ring
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.size(190.dp)
+                    ) {
+                        CircularProgressIndicator(
+                            progress = { 1f },
+                            modifier = Modifier.size(190.dp),
+                            color = Color(0xFF1E293B),
+                            strokeWidth = 10.dp
+                        )
+                        CircularProgressIndicator(
+                            progress = { animatedProgress },
+                            modifier = Modifier.size(190.dp),
+                            color = if (isCompleted) Color(0xFF10B981) else Color(0xFF38BDF8),
+                            strokeWidth = 10.dp
+                        )
+
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = if (isCompleted) "Done" else "${remainingSeconds}s",
+                                fontSize = 42.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+                            Text(
+                                text = if (isCompleted) "Complete" else "Remaining",
+                                fontSize = 12.sp,
+                                color = Color(0xFF7DD3FC)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(36.dp))
+
+                    // Action Controls
+                    AnimatedVisibility(
+                        visible = !isCompleted,
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            OutlinedButton(
+                                onClick = onSkip,
+                                shape = RoundedCornerShape(12.dp),
+                                colors = ButtonDefaults.outlinedButtonColors(
+                                    contentColor = Color(0xFFCBD5E1)
+                                )
+                            ) {
+                                Text("Skip")
+                            }
+
+                            Button(
+                                onClick = onSnooze,
+                                shape = RoundedCornerShape(12.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFF1E3A8A)
+                                )
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Snooze,
+                                    contentDescription = "Snooze",
+                                    modifier = Modifier.size(18.dp)
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text("Snooze 5m")
+                            }
+                        }
+                    }
+
+                    AnimatedVisibility(
+                        visible = isCompleted,
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        Button(
+                            onClick = onFinishNow,
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF059669)
+                            ),
+                            modifier = Modifier.fillMaxWidth(0.6f)
+                        ) {
+                            Text("Resume Screen", color = Color.White, fontWeight = FontWeight.SemiBold)
+                        }
                     }
                 }
             }

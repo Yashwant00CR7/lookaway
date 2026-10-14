@@ -44,7 +44,7 @@ fun SettingsDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "Timer & Alert Settings",
+                text = "Timer Settings",
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleLarge
             )
@@ -53,7 +53,7 @@ fun SettingsDialog(
             Column(modifier = Modifier.fillMaxWidth()) {
                 // Work Interval Slider
                 Text(
-                    text = "Work Interval: ${workMinutes.toInt()} minutes",
+                    text = "Work Interval: ${workMinutes.toInt()} min",
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 14.sp
                 )
@@ -81,7 +81,7 @@ fun SettingsDialog(
 
                 // Break Duration Slider
                 Text(
-                    text = "Break Duration: ${breakSeconds.toInt()} seconds",
+                    text = "Break Duration: ${breakSeconds.toInt()} sec",
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 14.sp
                 )
@@ -113,7 +113,7 @@ fun SettingsDialog(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "Chime Sound", fontSize = 15.sp)
+                    Text(text = "Audio Chime", fontSize = 15.sp)
                     Switch(
                         checked = soundEnabled,
                         onCheckedChange = { soundEnabled = it }
@@ -128,7 +128,7 @@ fun SettingsDialog(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "Haptic Vibration", fontSize = 15.sp)
+                    Text(text = "Haptic Feedback", fontSize = 15.sp)
                     Switch(
                         checked = vibrationEnabled,
                         onCheckedChange = { vibrationEnabled = it }
